@@ -1,0 +1,296 @@
+# The Query type contains all of the API's read operations.
+type Query {
+  # Search for a film by its title, or get all films when no parameters are provided.
+  films(title: String): [Film!]
+
+  # Search for a person by their name, or get all characters when no parameters are provided.
+  people(name: String): [Person!]
+
+  # Search for a planet by its name, or get all planets when no parameters are provided.
+  planets(name: String): [Planet!]
+
+  # Search for a species by its name, or get all species when no parameters are provided.
+  species(name: String): [Species!]
+
+  # Search for a starship by its name or model, or get all starships when no parameters are provided.
+  starships(nameOrModel: String): [Starship!]
+  
+  # Search for a vehicle by its name or model, or get all vehicles when no parameters are provided.
+  vehicles(nameOrModel: String): [Vehicle!]
+}
+
+# A Star Wars film.
+type Film {
+  # A unique identifier.
+  id: ID!
+
+  # The episode number of this film.
+  episode: Int!
+
+  # The opening paragraphs at the beginning of this film.
+  openingCrawl: String!
+
+  # The name of this film's director.
+  directorName: String!
+
+  # A list of names of the film's producers.
+  producerNames: [String!]!
+
+  # The RFC3339 date format of the film release in the orginal creator country.
+  releaseDate: Time!
+
+  # A list of species that are in this film.
+  species: [Species!]
+
+  # A list of starships that are in this film.
+  starships: [Starship!]
+
+  # A list of vehicles that are in this film.
+  vehicles: [Vehicle!]
+
+  # A list of characters that are in this film.
+  characters: [Person!]
+
+  # A list of planets that are in this film.
+  planets: [Planet!]
+
+  # The RFC3339 date format of the time that this resource was created.
+  createdAt: Time!
+  
+  # The RFC3339 date format of the time that this resource was edited.
+  editedAt: Time
+}
+
+# A LengthUnit refers to a discrete, pre-established length or distance having a constant magnitude
+# which is used as a reference or convention to express linear dimension.
+enum LengthUnit {
+  # A millimeter is a unit of length in the metric system, equal to 1/1000 of a meter.
+  MILLIMETER
+  
+  # A centimeter is a unit of length in the metric system, equal to 1/100 of a meter.
+  CENTIMETER
+
+  # A meter is defined as the length of the path traveled by light in a vacuum in 1/299792458 seconds.
+  METER
+
+  # A kilometer is a unit of length in the metric system, equal to 1000 meters.
+  KILOMETER
+
+  # An inch is a unit of length in the imperial system equal to 1/36 of a yard.
+  INCH
+
+  # A foot is a unit of length in the imperial system equal to 1/3 of a yard.
+  FOOT
+
+  # A yard is a unit of length in the imperial system equal to exactly 0.9144 meters.
+  YARD
+  
+  # A mile is a unit of length of linear measure in the imperial system equal to 1760 yards.
+  MILE
+}
+
+# A MassUnit is a measure of a physical body.
+enum MassUnit {
+  # A gram is a unit of mass in the metric system equal to 1/1000 of a kilogram.
+  GRAM
+
+  # A kilogram is the base unit of mass in the metric system.
+  KILOGRAM
+
+  # A metric ton is unit of mass in the metric system equal to 1000 kilograms.
+  METRIC_TON
+  
+  # A pound is a unit of mass in the imperial system equal to 0.43559237 kilograms.
+  POUND
+}
+
+# A person is an individual character within the Star Wars universe.
+type Person {
+  # A unique identifier.
+  id: ID!
+  # The name of this person.
+  name: String!
+  # The birth year of the person, using the in-universe standard of BBY of ABY.
+  # That is, Before the Battle of Yavin or After the Battle of Yavin.
+  # The Battle of Yavin is a battle that occurs at the end of Star Wars Episode IV: A New Hope.
+  birthYear: String!
+  # The eye color of this person.
+  # Value will be "unknown" if not known or null if the person does not have an eye.
+  eyeColor: String
+  # The gender of this person.
+  # Either "male", "female", or "unknown". Null if the person does not have a gender.
+  gender: String
+  # The hair color of this person.
+  # Value will be "unknown" if not known or null if the person does not have hair.
+  hairColor: String
+  # The height of the person in the specified unit.
+  height(unit: LengthUnit = CENTIMETER): Float!
+  # The mass of the person in the specified unit.
+  mass(unit: MassUnit = KILOGRAM): Float!
+  # The skin color of this person.
+  # Value will be "unknown" if not known of null if ther person does not have skin.
+  skinColor: String
+  # The planet this person was born on or inhabits.
+  homeworld: Planet
+  # A list of the films this person has been in.
+  films: [Film!]
+  # A list of species this person belongs to.
+  species: [Species!]
+  # A list of vehicles this person has piloted.
+  vehicles: [Vehicle!]
+  # The RFC3339 date format of the time this resource was created.
+  createdAt: Time!
+  # The RFC3339 date format of the time this resource was edited.
+  editedAt: Time
+}
+
+# A Planet is a large mass, planet, or planetoid in the Star Wars universe, at the time of 0 ABY.
+type Planet {
+  # A unique identifier.
+  id: ID!
+  # The name of this planet.
+  name: String!
+  # The diameter of this planet in the provided units.
+  diameter(unit: LengthUnit = KILOMETER): Float!
+  # The number of standard hours it takes for this planet to complete a single rotation on its axis.
+  rotationPeriod: Float!
+  # The number of standard days it takes for this planet to complete a single orbit of its local star.
+  orbitalPeriod: Float!
+  # A number denoting the gravity of this planet, where 1.0 is normal or 1 standard G.
+  gravity: Float!
+  # The average population of sentient beings inhabiting this planet.
+  population: Int!
+  # A list of the climates found on this planet.
+  climates: [String!]!
+  # A list of the terrains found on this planet.
+  terrains: [String!]!
+  # The percentage 0.0-100.0 of the planet surface that is naturally occurring water or bodies of water.
+  surfaceWaterPercentage: Float!
+  # A list of notable people who live on this planet.
+  residents: [Person!]
+  # A list of films this planet has appeared in.
+  films: [Film!]
+  # The RFC3339 date format of the time that this resource was created.
+  createdAt: Time!
+  # The RFC3339 date format of the time that this resource was edited.
+  editedAt: Time
+}
+
+# A Species is a type of person or character within the Star Wars universe.
+type Species {
+  # A unique identifier.
+  id: ID!
+  # The name of this species.
+  name: String!
+  # The classification of this species, such as "mammal" or "reptile".
+  classification: String!
+  # The designation of this species
+  designation: String!
+  # The average height of this species in the specified length unit.
+  averageHeight(unit: LengthUnit = CENTIMETER): Float!
+  # The average lifespan of this species in Earth years.
+  averageLifespan: Float!
+  # A list of common eye colors for this species.
+  # Empty if this species does not typically have eyes.
+  eyeColors: [String!]!
+  # A list of common hair colors for this species.
+  # Empty if this species does not typically have hair.
+  hairColors: [String!]!
+  # A list of common skin colors for this species.
+  # Empty if this species typically does not have skin.
+  skinColors: [String!]!
+  # The language commonly spoken by this species.
+  language: String!
+  # The planet this species originates from.
+  homeworld: Planet
+  # A list of characters that are a part of this species.
+  characters: [Person!]
+  # A list of films that this species has appeared in.
+  films: [Film!]
+  # The RFC3339 date format of the time this resource was created.
+  createdAt: Time!
+  # The RFC3339 date format of the time this resource was edited.
+  editedAt: Time
+}
+
+# A Starship is a single transport craft that has hyperdrive capability.
+type Starship {
+  # A unique identifier.
+  id: ID!
+  # The common name of the this startship (example: "Death Star").
+  name: String!
+  # The model or official name of this starship (example: "T-65 X-wing").
+  model: String!
+  # The class of this starship, such as "Starfighter".
+  class: String!
+  # A list of the manufacturer names of this starship.
+  manufacturers: [String!]!
+  # The cost of this starship new, in galactic credits.
+  cost: Int!
+  # The length of this starship in the specified units.
+  length(unit: LengthUnit = METER): Float!
+  # The number of personnel needed to run or pilot this starship.
+  crewSize: Int!
+  # The number of non-essential people this starship can transport.
+  passengerCapacity: Int!
+  # The maximum speed of this starship in the atmosphere.
+  # Null if this starship is incapable of atmospheric flight.
+  maxAtmosphericSpeed: Int
+  # The class of this starship's hyperdrive.
+  hyperdriveRating: Float
+  # The maximum number of Megalights this starship can travel in a standard hour.
+  maxMegalightsPerHour: Int!
+  # The maximum amount of mass this starship can transport.
+  cargoCapacity(unit: MassUnit = KILOGRAM): Float!
+  # The maximum length of time that this starship can provide consumables for its entire crew without
+  # having to resupply.
+  consumablesDuration: String!
+  # A list of films that this starship has appeared in.
+  films: [Film!]
+  # A list of people that have piloted this starship.
+  pilots: [Person!]
+  # The RFC3339 date format of the time that this resource was created.
+  createdAt: Time!
+  # The RFC3339 date format of the time that this resource was edited.
+  editedAt: Time
+}
+
+# Time is an RFC3339 timestamp.
+scalar Time
+
+# A Vehicle is a single transport craft that does not have hyperdrive capability.
+type Vehicle {
+  # A unique identifier.
+  id: ID!
+  # The common name of this vehicle (example: "Sand Crawler").
+  name: String!
+  # The model or official name of this vehicle (example: "All-Terrain Attack Transport").
+  model: String!
+  # The class of this vehicle (example: "Wheeled" or "Repulsorcraft").
+  class: String!
+  # A list of the manufacturers of this vehicle.
+  manufacturers: [String!]!
+  # The length of this vehicle in provided units.
+  length(unit: LengthUnit = METER): Float!
+  # The cost of this vehicle new, in galactic credits.
+  cost: Int!
+  # The number of personnel needed to run or pilot this vehicle.
+  crewSize: Int!
+  # The number of non-essential people this vehicle can transport.
+  passengerCapacity: Int!
+  # The maximum speed of this vehicle in the atmoshpere.
+  maxAtmosphericSpeed: Float!
+  # The maximum number of kilograms that this vehicle can transport.
+  cargoCapacity(unit: MassUnit = KILOGRAM): Float!
+  # The maximum length of time that this vehicle can provide consumables for its entire crew without
+  # having to resupply.
+  consumablesDuration: String!
+  # A list of films that this vehicle has appeared in.
+  films: [Film!]
+  # A list of people that have piloted this vehicle.
+  pilots: [Person!]
+  # The RFC3339 date format of the time that this resource was created.
+  createdAt: Time!
+  # The RFC3339 date format of the time that this resource was edited.
+  editedAt: Time
+}
